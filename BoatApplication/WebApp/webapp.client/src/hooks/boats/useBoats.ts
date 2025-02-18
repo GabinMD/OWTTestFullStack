@@ -33,7 +33,11 @@ export const useBoats = create<BoatsState>((set, get) => ({
   ) => {
     if (useIsLoading) set({ isLoading: true });
     const response = await fetchBoats(pagination);
-    set(handleGetBoatsResponse(response));
+    const newState = handleGetBoatsResponse(response);
+    set({
+      boats: newState.boats,
+      errors: { ...get().errors, ...newState.errors },
+    });
     if (useIsLoading) set({ isLoading: false });
   },
 

@@ -34,19 +34,20 @@ namespace BoatApplication.Application.Common.Behaviours
                     throw new UnauthorizedAccessException();
                 }
 
-                if (!(await ValidateRoles(authorizeAttributes)) || !(await ValidatePolicies(authorizeAttributes)))
-                {
-                    throw new ForbiddenAccessException(new Error(Constants.RequestErrors.ForbbidenAccess));
-                }
+                await ValidateRoles(authorizeAttributes);
+                await ValidatePolicies(authorizeAttributes);
             }
 
             return await next();
         }
 
-        private async Task<bool> ValidateRoles(IEnumerable<AuthorizeAttribute> authorizeAttributes)
+        private async Task ValidateRoles(IEnumerable<AuthorizeAttribute> authorizeAttributes)
         {
+            var roles = authorizeAttributes.GetRoles();
+            if (!roles.Any())
+                return;
             bool isAuthorized = false;
-            foreach (var role in authorizeAttributes.GetRoles())
+            foreach (var role in roles)
             {
                 var hasRole = await _identityService.HasRoleAsync(_user, role);
                 if (hasRole.Succeeded)
@@ -55,12 +56,15 @@ namespace BoatApplication.Application.Common.Behaviours
                     break;
                 }
             }
-            return isAuthorized;
+            if (!isAuthorized)
+                throw new ForbiddenAccessException(new Error(Constants.RequestErrors.ForbbidenAccess));
         }
 
-        private async Task<bool> ValidatePolicies(IEnumerable<AuthorizeAttribute> authorizeAttributes)
+        private async Task ValidatePolicies(IEnumerable<AuthorizeAttribute> authorizeAttributes)
         {
-
+            var policies = authorizeAttributes.GetPolicies();
+            if (!policies.Any())
+                return;
             bool isAuthorized = false;
             foreach (var policy in authorizeAttributes.GetPolicies())
             {
@@ -71,7 +75,8 @@ namespace BoatApplication.Application.Common.Behaviours
                     break;
                 }
             }
-            return isAuthorized;
+            if (!isAuthorized)
+                throw new ForbiddenAccessException(new Error(Constants.RequestErrors.ForbbidenAccess));
         }
     }
 }

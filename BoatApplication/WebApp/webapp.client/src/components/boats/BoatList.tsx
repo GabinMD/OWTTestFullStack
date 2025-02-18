@@ -1,19 +1,64 @@
-import { useState } from "react";
-import { useBoats } from "../../hooks/boats/useBoats";
+import { useEffect, useState } from "react";
 import BoatCard from "./BoatCard";
 import CreateBoatModal from "./modals/CreateBoatModal.tsx";
 import ConfirmModal from "./modals/ConfirmModal.tsx";
+import PaginationComponent from "../PaginationComponent.tsx";
+import { getPaginationFromPaginatedListOfBoatDto } from "../../utils/boats-utils.ts";
+import { Pagination } from "../../interfaces/pagination.ts";
+import { PaginatedListOfBoatDto } from "../../api-client/web-api-client.ts";
+import ErrorListComponent from "./ErrorsListComponent.tsx";
 
-const BoatList = () => {
-  const { boats, createBoat, deleteBoat, purgeBoats, isLoading } = useBoats();
+interface BoatListProps {
+  boats: PaginatedListOfBoatDto | null;
+  errors: string[];
+  fetchBoats: (pagination: Pagination) => Promise<void>;
+  createBoat: (name: string, description: string) => Promise<void>;
+  deleteBoat: (id: number) => Promise<void>;
+  purgeBoats: () => Promise<void>;
+  isLoading: boolean;
+}
+
+const BoatList = (props: BoatListProps) => {
+  const {
+    boats,
+    errors,
+    fetchBoats: refreshBoats,
+    createBoat,
+    deleteBoat,
+    purgeBoats,
+    isLoading,
+  } = props;
+
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState<number | null>(
     null
   );
   const [showConfirmPurge, setShowConfirmPurge] = useState(false);
 
+  const [pagination, setPagination] = useState<Pagination>(
+    getPaginationFromPaginatedListOfBoatDto(boats)
+  );
+
+  const handlePageChange = (pagination: Pagination) => {
+    setPagination(pagination);
+    refreshBoats(pagination);
+  };
+
+  useEffect(() => {
+    const newPagination = getPaginationFromPaginatedListOfBoatDto(boats);
+    if (
+      newPagination.pageNumber !== pagination.pageNumber ||
+      newPagination.pageSize !== pagination.pageSize ||
+      newPagination.totalItems !== pagination.totalItems ||
+      newPagination.totalPages !== pagination.totalPages
+    ) {
+      setPagination(newPagination);
+    }
+  }, [boats]);
+
   return (
     <div>
+      <ErrorListComponent errors={errors} />
       <div className="flex justify-between mb-4">
         <button
           className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
@@ -40,6 +85,11 @@ const BoatList = () => {
           />
         ))}
       </div>
+
+      <PaginationComponent
+        pagination={pagination}
+        onPageChange={handlePageChange}
+      />
 
       {showCreateModal && (
         <CreateBoatModal

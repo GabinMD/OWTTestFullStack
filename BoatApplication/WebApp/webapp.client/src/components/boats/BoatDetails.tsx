@@ -2,16 +2,18 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ConfirmModal from "./modals/ConfirmModal";
 import { BoatDto } from "../../api-client/web-api-client.ts";
+import ErrorListComponent from "./ErrorsListComponent.tsx";
 
 interface BoatDetailsProps {
   boat: BoatDto | null;
+  errors: string[];
   updateBoat: (id: number, name: string, description: string) => void;
   deleteBoat: (id: number) => void;
   isLoading: boolean;
 }
 
 const BoatDetails = (props: BoatDetailsProps) => {
-  const { boat, updateBoat, deleteBoat, isLoading } = props;
+  const { boat, errors, updateBoat, deleteBoat, isLoading } = props;
 
   const navigate = useNavigate();
 
@@ -19,7 +21,6 @@ const BoatDetails = (props: BoatDetailsProps) => {
   const [boatData, setBoatData] = useState({ name: "", description: "" });
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
-  // 🔥 Mettre à jour les champs si boat change
   useEffect(() => {
     if (boat) {
       setBoatData({
@@ -36,6 +37,7 @@ const BoatDetails = (props: BoatDetailsProps) => {
 
   return (
     <div className="container mx-auto px-6 pt-20">
+      <ErrorListComponent errors={errors} />
       <div className="bg-white shadow-md rounded-lg p-6 max-w-2xl mx-auto">
         {isLoading ? (
           <p className="text-gray-500 text-center">Chargement du bateau...</p>

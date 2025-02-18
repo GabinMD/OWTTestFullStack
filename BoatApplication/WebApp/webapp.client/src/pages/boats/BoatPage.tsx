@@ -5,8 +5,14 @@ import BoatDetails from "../../components/boats/BoatDetails.tsx";
 
 const Boat = () => {
   const { id } = useParams();
-  const { currentBoat, fetchSingleBoat, updateBoat, deleteBoat, isLoading } =
-    useBoats();
+  const {
+    currentBoat,
+    errors,
+    fetchSingleBoat,
+    updateBoat,
+    deleteBoat,
+    isLoading,
+  } = useBoats();
 
   // 🔥 Charger le bateau au montage
   useEffect(() => {
@@ -17,6 +23,7 @@ const Boat = () => {
     <div className="container mx-auto px-6 pt-20  w-screen">
       <BoatDetails
         boat={currentBoat}
+        errors={errors}
         updateBoat={updateBoat}
         deleteBoat={deleteBoat}
         isLoading={isLoading}

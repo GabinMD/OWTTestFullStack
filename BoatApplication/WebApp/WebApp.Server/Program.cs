@@ -3,7 +3,6 @@ using BoatApplication.Infrastructure.DataBase.Extentions;
 using BoatApplication.WebApp.Server.Infrastructure.Extentions;
 using NSwag;
 using NSwag.Generation.Processors.Security;
-using YamlDotNet.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,3 +55,5 @@ app.MapControllers();
 app.MapFallbackToFile("/index.html");
 
 app.Run();
+
+public partial class Program { }

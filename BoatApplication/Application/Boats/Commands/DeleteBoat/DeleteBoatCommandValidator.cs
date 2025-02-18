@@ -1,15 +1,5 @@
-﻿using BoatApplication.Application.Boat.Queries.GetBoat;
-using BoatApplication.Application.Boats.Commands.DeleteBoat;
-using BoatApplication.Application.Boats.Models;
-using BoatApplication.Domain.Boats.DTOs;
-using BoatApplication.Domain.Boats.DTOs.Validators;
-using BoatApplication.Domain.Boats.Interfaces;
-using BoatApplication.Domain.Identity.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BoatApplication.Application.Boats.Commands.DeleteBoat;
+using FluentValidation;
 
 namespace BoatApplication.Application.Boats.Commands.CreateBoat
 {
@@ -17,7 +7,7 @@ namespace BoatApplication.Application.Boats.Commands.CreateBoat
     {
         public DeleteBoatCommandValidator()
         {
-            RuleFor(x => x.Id).GreaterThanOrEqualTo(0);
+            RuleFor(x => x.Id).GreaterThan(0);
         }
     }
 }

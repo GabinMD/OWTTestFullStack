@@ -1,4 +1,5 @@
 ﻿using BoatApplication.Application.Boats.Queries.GetBoats;
+using FluentValidation;
 
 namespace BoatApplication.Application.Boats.Queries.GetBoat
 {

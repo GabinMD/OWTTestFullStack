@@ -217,6 +217,34 @@ export class BoatClient extends BaseApiClient {
             result400 = GetBoatsResponse.fromJS(resultData400);
             return throwException("A server side error occurred.", status, _responseText, _headers, result400);
             });
+        } else if (status === 401) {
+            return response.text().then((_responseText) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = BaseAPIResponse.fromJS(resultData401);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result401);
+            });
+        } else if (status === 402) {
+            return response.text().then((_responseText) => {
+            let result402: any = null;
+            let resultData402 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result402 = BaseAPIResponse.fromJS(resultData402);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result402);
+            });
+        } else if (status === 403) {
+            return response.text().then((_responseText) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = BaseAPIResponse.fromJS(resultData403);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result403);
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = BaseAPIResponse.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
         } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -263,6 +291,34 @@ export class BoatClient extends BaseApiClient {
             let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result400 = GetBoatResponse.fromJS(resultData400);
             return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else if (status === 401) {
+            return response.text().then((_responseText) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = BaseAPIResponse.fromJS(resultData401);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result401);
+            });
+        } else if (status === 402) {
+            return response.text().then((_responseText) => {
+            let result402: any = null;
+            let resultData402 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result402 = BaseAPIResponse.fromJS(resultData402);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result402);
+            });
+        } else if (status === 403) {
+            return response.text().then((_responseText) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = BaseAPIResponse.fromJS(resultData403);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result403);
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = BaseAPIResponse.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
             });
         } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
@@ -311,6 +367,34 @@ export class BoatClient extends BaseApiClient {
             result400 = GetBoatResponse.fromJS(resultData400);
             return throwException("A server side error occurred.", status, _responseText, _headers, result400);
             });
+        } else if (status === 401) {
+            return response.text().then((_responseText) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = BaseAPIResponse.fromJS(resultData401);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result401);
+            });
+        } else if (status === 402) {
+            return response.text().then((_responseText) => {
+            let result402: any = null;
+            let resultData402 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result402 = BaseAPIResponse.fromJS(resultData402);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result402);
+            });
+        } else if (status === 403) {
+            return response.text().then((_responseText) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = BaseAPIResponse.fromJS(resultData403);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result403);
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = BaseAPIResponse.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
         } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -357,6 +441,34 @@ export class BoatClient extends BaseApiClient {
             let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result400 = BaseAPIResponse.fromJS(resultData400);
             return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else if (status === 401) {
+            return response.text().then((_responseText) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = BaseAPIResponse.fromJS(resultData401);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result401);
+            });
+        } else if (status === 402) {
+            return response.text().then((_responseText) => {
+            let result402: any = null;
+            let resultData402 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result402 = BaseAPIResponse.fromJS(resultData402);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result402);
+            });
+        } else if (status === 403) {
+            return response.text().then((_responseText) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = BaseAPIResponse.fromJS(resultData403);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result403);
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = BaseAPIResponse.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
             });
         } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
@@ -405,6 +517,34 @@ export class BoatClient extends BaseApiClient {
             result400 = BaseAPIResponse.fromJS(resultData400);
             return throwException("A server side error occurred.", status, _responseText, _headers, result400);
             });
+        } else if (status === 401) {
+            return response.text().then((_responseText) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = BaseAPIResponse.fromJS(resultData401);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result401);
+            });
+        } else if (status === 402) {
+            return response.text().then((_responseText) => {
+            let result402: any = null;
+            let resultData402 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result402 = BaseAPIResponse.fromJS(resultData402);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result402);
+            });
+        } else if (status === 403) {
+            return response.text().then((_responseText) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = BaseAPIResponse.fromJS(resultData403);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result403);
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = BaseAPIResponse.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
         } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
@@ -447,6 +587,34 @@ export class BoatClient extends BaseApiClient {
             let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
             result400 = PurgeBoatResponse.fromJS(resultData400);
             return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else if (status === 401) {
+            return response.text().then((_responseText) => {
+            let result401: any = null;
+            let resultData401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result401 = BaseAPIResponse.fromJS(resultData401);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result401);
+            });
+        } else if (status === 402) {
+            return response.text().then((_responseText) => {
+            let result402: any = null;
+            let resultData402 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result402 = BaseAPIResponse.fromJS(resultData402);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result402);
+            });
+        } else if (status === 403) {
+            return response.text().then((_responseText) => {
+            let result403: any = null;
+            let resultData403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result403 = BaseAPIResponse.fromJS(resultData403);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result403);
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+            let result404: any = null;
+            let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result404 = BaseAPIResponse.fromJS(resultData404);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result404);
             });
         } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {

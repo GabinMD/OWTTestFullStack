@@ -4,7 +4,7 @@ using BoatApplication.Domain.Boats.Interfaces;
 
 namespace BoatApplication.Application.Boats.Commands.PurgeBoats
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Administrator")]
     [Authorize(Policy = "CanPurge")]
     public class PurgeBoatsCommand : IRequest<PurgeBoatResponse>, IBoatRequest
     {

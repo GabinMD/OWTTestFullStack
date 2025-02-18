@@ -21,6 +21,10 @@ namespace WebApp.Server.Controllers
     [ApiController]
     [Route("api/auth")]
     [Authorize]
+    [SwaggerResponse(401, typeof(BaseAPIResponse))]
+    [SwaggerResponse(402, typeof(BaseAPIResponse))]
+    [SwaggerResponse(403, typeof(BaseAPIResponse))]
+    [SwaggerResponse(404, typeof(BaseAPIResponse))]
     public class BoatController : ControllerBase
     {
         private readonly IMediator _mediator;

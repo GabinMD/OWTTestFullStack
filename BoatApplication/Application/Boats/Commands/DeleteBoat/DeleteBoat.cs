@@ -1,4 +1,5 @@
-﻿using BoatApplication.Application.Boats.Interfaces;
+﻿using BoatApplication.Application.Boats.Attributes;
+using BoatApplication.Application.Boats.Interfaces;
 using BoatApplication.Application.Boats.Models;
 using BoatApplication.Domain.Boats.DTOs;
 using BoatApplication.Domain.Boats.Interfaces;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace BoatApplication.Application.Boats.Commands.DeleteBoat
 {
+    [BoatAuthorize(Policy = "IsOwner")]
     public class DeleteBoatCommand() : IRequest<BaseAPIResponse>, ITargetBoatRequest
     {
         public int Id { get; init; }

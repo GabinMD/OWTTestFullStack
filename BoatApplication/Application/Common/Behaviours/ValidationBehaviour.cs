@@ -1,4 +1,9 @@
 ﻿
+using BoatApplication.Domain.Common.Exceptions;
+using FluentValidation;
+using System.ComponentModel.DataAnnotations;
+
+
 namespace BoatApplication.Application.Common.Behaviours;
 
 public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
@@ -27,7 +32,7 @@ public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
                 .ToList();
 
             if (failures.Any())
-                throw new ValidationException(failures);
+                throw new Domain.Common.Exceptions.ValidationException(failures);
         }
         return await next();
     }

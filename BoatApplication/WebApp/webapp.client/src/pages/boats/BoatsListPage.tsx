@@ -4,7 +4,15 @@ import { useBoats } from "../../hooks/boats/useBoats.ts";
 import { DefaultPagination } from "../../interfaces/pagination.ts";
 
 const BoatListPage = () => {
-  const { fetchAllBoats } = useBoats();
+  const {
+    boats,
+    errors,
+    fetchAllBoats,
+    createBoat,
+    deleteBoat,
+    purgeBoats,
+    isLoading,
+  } = useBoats();
 
   useEffect(() => {
     fetchAllBoats(DefaultPagination, true);
@@ -12,7 +20,15 @@ const BoatListPage = () => {
 
   return (
     <div className="container mx-auto px-6 pt-20  w-screen">
-      <BoatList />
+      <BoatList
+        boats={boats}
+        errors={errors}
+        fetchBoats={(pagination) => fetchAllBoats(pagination, true)}
+        createBoat={createBoat}
+        deleteBoat={deleteBoat}
+        purgeBoats={purgeBoats}
+        isLoading={isLoading}
+      />
     </div>
   );
 };

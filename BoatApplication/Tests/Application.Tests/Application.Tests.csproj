@@ -5,15 +5,55 @@
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	  <PreserveCompilationContext>true</PreserveCompilationContext>
   </PropertyGroup>
 
+	<ItemGroup>
+		<None Remove="appsettings.json" />
+	</ItemGroup>
+
+    <ItemGroup>
+	    <Content Include="appsettings.Development.json">
+	      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	    </Content>
+	    <Content Include="appsettings.json">
+		    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	    </Content>
+    </ItemGroup>
+
   <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="8.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="MSTest" Version="3.6.4" />
+    <PackageReference Include="NUnit" Version="4.3.2" />
+    <PackageReference Include="NUnit.Analyzers" Version="4.6.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
+    <PackageReference Include="Respawn" Version="6.2.1" />
+    <PackageReference Include="Testcontainers.MsSql" Version="4.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Application\Application.csproj" />
+    <ProjectReference Include="..\..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\..\WebApp\WebApp.Server\WebApp.Server.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="Application.Tests" />
+	</ItemGroup>
 
 </Project>
