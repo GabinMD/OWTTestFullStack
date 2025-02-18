@@ -1,43 +1,81 @@
-🚤 Boat Manager – OWT Test Project
-This is a basic boat management application built for the OWT technical test.
-It follows the Clean Architecture approach, heavily inspired by Jason Taylor's implementation.
+# 🚤 Boat Manager – OWT Test Project  
 
-🎥 Reference video: Jason Taylor - Clean Architecture
-https://www.youtube.com/watch?v=dK4Yb6-LxAk
+![.NET](https://img.shields.io/badge/.NET-9-blue?style=flat&logo=dotnet)  
+![React](https://img.shields.io/badge/React-19-61DAFB?style=flat&logo=react)  
+![License](https://img.shields.io/badge/License-MIT-green.svg)  
 
-🛠️ Tech Stack
+This is a **boat management application** built for the **OWT technical test**.  
+It follows the **Clean Architecture** approach, inspired by **Jason Taylor**.  
 
-Backend
-.NET 9 – API implementation
-MediatR – CQRS pattern
-FluentValidation – Input validation
-AutoMapper – Object mapping
-Ardalis.GuardClauses – Defensive programming
-NSWAG – API documentation & client generation
+📺 **Reference video:** [Jason Taylor - Clean Architecture](https://www.youtube.com/watch?v=dK4Yb6-LxAk)  
 
-Frontend
-React 19 – Modern frontend framework
-TypeScript – Strict typing & maintainability
-Tailwind CSS – Styling
-React Query – Data fetching & caching
-Zustand – Global state management
+---
 
-🏗️ Architecture
-The project follows Clean Architecture, separating:
-✅ Domain – Core business logic
-✅ Application – CQRS, validation & use cases
-✅ Infrastructure – Database, authentication, external services
-✅ Presentation – Web API & React frontend
+## 🛠️ **Tech Stack**  
 
-🚀 This structure is a bit overkill for this test, but I had fun implementing it!
-There's still room for improvement, but I'm happy to have completed the test in just 3 days.
+### **Backend**  
+- ⚙️ **.NET 9** – Web API implementation  
+- 📌 **MediatR** – CQRS pattern  
+- ✅ **FluentValidation** – Request validation  
+- 🔄 **AutoMapper** – Object mapping  
+- 🚦 **Ardalis.GuardClauses** – Defensive programming  
+- 📝 **NSWAG** – API documentation & client generation  
 
-🚀 Features Implemented
-✅ User authentication (Login, Register, JWT, Refresh Token)
-✅ Boat CRUD (Create, Read, Update, Delete boats)
-✅ Pagination & Page Size Selection
-✅ Role-based authorization
-✅ NSwag-generated API client
-✅ Automatic token refresh
-✅ Global error handling
-✅ Clean & modern UI with Tailwind CSS
+### **Frontend**  
+- ⚛️ **React 19** – Modern frontend framework  
+- 🔵 **TypeScript** – Strongly typed JavaScript  
+- 🎨 **Tailwind CSS** – Utility-first styling  
+- 🔍 **React Query** – Data fetching & caching  
+- 🌎 **Zustand** – State management  
+
+---
+
+## 🏢 **Architecture Overview**  
+
+The project follows **Clean Architecture**, separating:  
+
+📂 **Domain** – Core business logic  
+📂 **Application** – CQRS, validation & use cases  
+📂 **Infrastructure** – Database, authentication, external services  
+📂 **Presentation** – Web API & React frontend  
+
+⚡ **This architecture might be overkill for the task, but I had fun implementing it!**  
+I finished the test in **3 days**, but there's still room for improvement.  
+
+---
+
+## 🚀 **Features Implemented**  
+
+✔️ **User authentication** (Login, Register, JWT, Refresh Token)  
+✔️ **Boat CRUD** (Create, Read, Update, Delete boats)  
+✔️ **Pagination & Page Size Selection**  
+✔️ **Role-based authorization**  
+✔️ **NSwag-generated API client**  
+✔️ **Automatic token refresh**  
+✔️ **Global error handling**  
+✔️ **Clean & modern UI with Tailwind CSS**  
+✔️ **Unit Testing**  
+
+---
+
+## 📌 **How to Run the Project**  
+
+### **Backend (.NET 9)**
+```sh
+cd backend
+dotnet run
+```
+
+### **Frontend (React 19)**
+```sh
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+## 🛠️ **Future Improvements**  
+💡 Improve **UI/UX animations**  
+💡 Implement **Docker & CI/CD pipeline**  
+💡 Add **search & filtering for boats**  
