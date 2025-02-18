@@ -99,7 +99,7 @@
       "useLeafType": false,
       "classTypes": [],
       "extendedClasses": [],
-      "extensionCode": "import { BaseApiClient } from \".\/base-api-client.ts\"",
+      "extensionCode": "nswag.imports.ts",
       "generateDefaultValues": true,
       "excludedTypeNames": [],
       "excludedParameterNames": [],

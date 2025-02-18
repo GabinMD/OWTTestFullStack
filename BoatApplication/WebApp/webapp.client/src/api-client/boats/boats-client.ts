@@ -7,6 +7,7 @@ import {
   GetBoatResponse,
   GetBoatsResponse,
   PurgeBoatResponse,
+  SwaggerException,
   UpdateBoatCommand,
 } from "../web-api-client.ts";
 
@@ -28,17 +29,23 @@ export const fetchBoats = async (
     );
     return response.result;
   } catch (result) {
+    if (result instanceof SwaggerException) {
+      return result.result;
+    }
     return result as GetBoatsResponse;
   }
 };
 
-export const fetchBoat = async (
+export const fetchBoatById = async (
   id: number
 ): Promise<GetBoatResponse | undefined> => {
   try {
     const response = await boatClient.boat_Boat(id);
     return response.result;
   } catch (result) {
+    if (result instanceof SwaggerException) {
+      return result.result;
+    }
     return result as GetBoatResponse;
   }
 };
@@ -54,6 +61,9 @@ export const fetchCreateBoat = async (
     const response = await boatClient.boat_Create(command);
     return response.result;
   } catch (result) {
+    if (result instanceof SwaggerException) {
+      return result.result;
+    }
     return result as GetBoatResponse;
   }
 };
@@ -71,6 +81,9 @@ export const fetchUpdateBoat = async (
     const response = await boatClient.boat_Update(command);
     return response.result;
   } catch (result) {
+    if (result instanceof SwaggerException) {
+      return result.result;
+    }
     return result as GetBoatResponse;
   }
 };
@@ -82,6 +95,9 @@ export const fetchDeleteBoat = async (
     const response = await boatClient.boat_Delete(id);
     return response.result;
   } catch (result) {
+    if (result instanceof SwaggerException) {
+      return result.result;
+    }
     return result as BaseAPIResponse;
   }
 };
@@ -93,6 +109,9 @@ export const fetchPurgeBoats = async (): Promise<
     const response = await boatClient.boat_Purge();
     return response.result;
   } catch (result) {
+    if (result instanceof SwaggerException) {
+      return result.result;
+    }
     return result as PurgeBoatResponse;
   }
 };

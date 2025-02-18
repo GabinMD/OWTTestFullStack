@@ -10,6 +10,7 @@ export const parseJwt = (token: string | null): User | null => {
     return {
       id: payload.sub,
       name: payload.name,
+      exp: payload.exp,
     };
   } catch (e) {
     console.error("Erreur lors du parsing du token:", e);

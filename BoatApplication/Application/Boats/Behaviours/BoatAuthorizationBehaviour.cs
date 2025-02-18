@@ -5,6 +5,7 @@ using BoatApplication.Domain.Boats.Interfaces;
 using BoatApplication.Domain.Common.Exceptions;
 using BoatApplication.Domain.Common.Extentions;
 using BoatApplication.Domain.Common.Interfaces.Services;
+using BoatApplication.Domain.Common.Models;
 using BoatApplication.Domain.Identity.Interfaces;
 using System.Reflection;
 
@@ -42,7 +43,7 @@ namespace BoatApplication.Application.Boats.Behaviours
                 }
                 if (!(await ValidatePolicies(authorizeAttributes, _user, request)))
                 {
-                    throw new ForbiddenAccessException();
+                    throw new ForbiddenAccessException(new Error(Constants.RequestErrors.ForbbidenAccess));
                 }
             }
 

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import {
   fetchBoats,
-  fetchBoat,
+  fetchBoatById,
   fetchCreateBoat,
   fetchUpdateBoat,
   fetchDeleteBoat,
@@ -39,7 +39,7 @@ export const useBoats = create<BoatsState>((set, get) => ({
 
   fetchSingleBoat: async (id) => {
     set({ isLoading: true });
-    const response = await fetchBoat(id);
+    const response = await fetchBoatById(id);
     set(handleGetBoatResponse(response));
     set({ isLoading: false });
   },

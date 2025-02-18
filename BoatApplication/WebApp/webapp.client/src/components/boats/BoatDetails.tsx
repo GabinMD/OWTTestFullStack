@@ -42,21 +42,23 @@ const BoatDetails = (props: BoatDetailsProps) => {
         ) : (
           <>
             <h1 className="text-3xl font-bold text-blue-700 text-center mb-4">
-              {isEditing ? "Modifier le bateau" : boat?.name}
+              {isEditing ? "Modifier le bateau" : `🚤${boat?.name}`}
             </h1>
 
             {isEditing ? (
               <div className="flex flex-col gap-4">
+                <label className="text-gray-600">Nom</label>
                 <input
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  className="w-full p-2 border border-gray-300 rounded-md text-black"
                   placeholder="Nom"
                   value={boatData.name}
                   onChange={(e) =>
                     setBoatData({ ...boatData, name: e.target.value })
                   }
                 />
+                <label className="text-gray-600">Description</label>
                 <textarea
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  className="w-full p-2 border border-gray-300 rounded-md text-black"
                   placeholder="Description"
                   value={boatData.description}
                   onChange={(e) =>

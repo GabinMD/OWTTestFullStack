@@ -3,10 +3,12 @@ using BoatApplication.Domain.Common.Interfaces.Services;
 using BoatApplication.Domain.Constants;
 using BoatApplication.Infrastructure;
 using BoatApplication.Infrastructure.DataBase;
+using BoatApplication.Infrastructure.DataBase.Interceptors;
 using BoatApplication.Infrastructure.DataBase.Interfaces;
 using BoatApplication.Infrastructure.DataBase.Repositories;
 using BoatApplication.Infrastructure.Identity;
 using BoatApplication.Infrastructure.Identity.Services;
+using CleanArchitectureBoat.Infrastructure.Data.Interceptors;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -74,6 +76,8 @@ public static class DependencyInjection
             options.UseSqlServer(connectionString, b => b.MigrationsAssembly(migrationsAssembly));
         });
 
+        builder.Services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
+        builder.Services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
 
         builder.Services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 

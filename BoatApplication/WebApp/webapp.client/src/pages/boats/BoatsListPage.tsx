@@ -11,7 +11,7 @@ const BoatListPage = () => {
   }, []);
 
   return (
-    <div className="container mx-auto px-6 pt-20">
+    <div className="container mx-auto px-6 pt-20  w-screen">
       <BoatList />
     </div>
   );

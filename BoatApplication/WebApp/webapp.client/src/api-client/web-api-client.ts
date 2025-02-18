@@ -11,1313 +11,1029 @@
 import { BaseApiClient } from "./base-api-client.ts";
 
 export class AuthClient extends BaseApiClient {
-  private http: {
-    fetch(url: RequestInfo, init?: RequestInit): Promise<Response>;
-  };
-  private baseUrl: string;
-  protected jsonParseReviver: ((key: string, value: any) => any) | undefined =
-    undefined;
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-  constructor(
-    baseUrl?: string,
-    http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }
-  ) {
-    super();
-    this.http = http ? http : (window as any);
-    this.baseUrl = baseUrl ?? "";
-  }
-
-  auth_Login(command: LoginCommand): Promise<SwaggerResponse<AuthResponse>> {
-    let url_ = this.baseUrl + "/api/auth/login";
-    url_ = url_.replace(/[?&]$/, "");
-
-    const content_ = JSON.stringify(command);
-
-    let options_: RequestInit = {
-      body: content_,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    };
-
-    return this.transformOptions(options_)
-      .then((transformedOptions_) => {
-        return this.http.fetch(url_, transformedOptions_);
-      })
-      .then((_response: Response) => {
-        return this.processAuth_Login(_response);
-      });
-  }
-
-  protected processAuth_Login(
-    response: Response
-  ): Promise<SwaggerResponse<AuthResponse>> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl ?? "";
     }
-    if (status === 200) {
-      return response.text().then((_responseText) => {
-        let result200: any = null;
-        let resultData200 =
-          _responseText === ""
-            ? null
-            : JSON.parse(_responseText, this.jsonParseReviver);
-        result200 = AuthResponse.fromJS(resultData200);
-        return new SwaggerResponse(status, _headers, result200);
-      });
-    } else if (status === 400) {
-      return response.text().then((_responseText) => {
-        let result400: any = null;
-        let resultData400 =
-          _responseText === ""
-            ? null
-            : JSON.parse(_responseText, this.jsonParseReviver);
-        result400 = AuthResponse.fromJS(resultData400);
-        return throwException(
-          "A server side error occurred.",
-          status,
-          _responseText,
-          _headers,
-          result400
-        );
-      });
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then((_responseText) => {
-        return throwException(
-          "An unexpected server error occurred.",
-          status,
-          _responseText,
-          _headers
-        );
-      });
+
+    auth_Login(command: LoginCommand): Promise<SwaggerResponse<AuthResponse>> {
+        let url_ = this.baseUrl + "/api/auth/login";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processAuth_Login(_response);
+        });
     }
-    return Promise.resolve<SwaggerResponse<AuthResponse>>(
-      new SwaggerResponse(status, _headers, null as any)
-    );
-  }
 
-  auth_RefreshToken(
-    command: RefreshTokenCommand
-  ): Promise<SwaggerResponse<AuthResponse>> {
-    let url_ = this.baseUrl + "/api/auth/refresh-token";
-    url_ = url_.replace(/[?&]$/, "");
-
-    const content_ = JSON.stringify(command);
-
-    let options_: RequestInit = {
-      body: content_,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    };
-
-    return this.transformOptions(options_)
-      .then((transformedOptions_) => {
-        return this.http.fetch(url_, transformedOptions_);
-      })
-      .then((_response: Response) => {
-        return this.processAuth_RefreshToken(_response);
-      });
-  }
-
-  protected processAuth_RefreshToken(
-    response: Response
-  ): Promise<SwaggerResponse<AuthResponse>> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
+    protected processAuth_Login(response: Response): Promise<SwaggerResponse<AuthResponse>> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AuthResponse.fromJS(resultData200);
+            return new SwaggerResponse(status, _headers, result200);
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = AuthResponse.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<SwaggerResponse<AuthResponse>>(new SwaggerResponse(status, _headers, null as any));
     }
-    if (status === 200) {
-      return response.text().then((_responseText) => {
-        let result200: any = null;
-        let resultData200 =
-          _responseText === ""
-            ? null
-            : JSON.parse(_responseText, this.jsonParseReviver);
-        result200 = AuthResponse.fromJS(resultData200);
-        return new SwaggerResponse(status, _headers, result200);
-      });
-    } else if (status === 400) {
-      return response.text().then((_responseText) => {
-        let result400: any = null;
-        let resultData400 =
-          _responseText === ""
-            ? null
-            : JSON.parse(_responseText, this.jsonParseReviver);
-        result400 = AuthResponse.fromJS(resultData400);
-        return throwException(
-          "A server side error occurred.",
-          status,
-          _responseText,
-          _headers,
-          result400
-        );
-      });
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then((_responseText) => {
-        return throwException(
-          "An unexpected server error occurred.",
-          status,
-          _responseText,
-          _headers
-        );
-      });
+
+    auth_RefreshToken(command: RefreshTokenCommand): Promise<SwaggerResponse<AuthResponse>> {
+        let url_ = this.baseUrl + "/api/auth/refresh-token";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processAuth_RefreshToken(_response);
+        });
     }
-    return Promise.resolve<SwaggerResponse<AuthResponse>>(
-      new SwaggerResponse(status, _headers, null as any)
-    );
-  }
 
-  auth_Register(
-    command: RegisterUserCommand
-  ): Promise<SwaggerResponse<AuthResponse>> {
-    let url_ = this.baseUrl + "/api/auth/register";
-    url_ = url_.replace(/[?&]$/, "");
-
-    const content_ = JSON.stringify(command);
-
-    let options_: RequestInit = {
-      body: content_,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    };
-
-    return this.transformOptions(options_)
-      .then((transformedOptions_) => {
-        return this.http.fetch(url_, transformedOptions_);
-      })
-      .then((_response: Response) => {
-        return this.processAuth_Register(_response);
-      });
-  }
-
-  protected processAuth_Register(
-    response: Response
-  ): Promise<SwaggerResponse<AuthResponse>> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
+    protected processAuth_RefreshToken(response: Response): Promise<SwaggerResponse<AuthResponse>> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AuthResponse.fromJS(resultData200);
+            return new SwaggerResponse(status, _headers, result200);
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = AuthResponse.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<SwaggerResponse<AuthResponse>>(new SwaggerResponse(status, _headers, null as any));
     }
-    if (status === 200) {
-      return response.text().then((_responseText) => {
-        let result200: any = null;
-        let resultData200 =
-          _responseText === ""
-            ? null
-            : JSON.parse(_responseText, this.jsonParseReviver);
-        result200 = AuthResponse.fromJS(resultData200);
-        return new SwaggerResponse(status, _headers, result200);
-      });
-    } else if (status === 400) {
-      return response.text().then((_responseText) => {
-        let result400: any = null;
-        let resultData400 =
-          _responseText === ""
-            ? null
-            : JSON.parse(_responseText, this.jsonParseReviver);
-        result400 = AuthResponse.fromJS(resultData400);
-        return throwException(
-          "A server side error occurred.",
-          status,
-          _responseText,
-          _headers,
-          result400
-        );
-      });
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then((_responseText) => {
-        return throwException(
-          "An unexpected server error occurred.",
-          status,
-          _responseText,
-          _headers
-        );
-      });
+
+    auth_Register(command: RegisterUserCommand): Promise<SwaggerResponse<AuthResponse>> {
+        let url_ = this.baseUrl + "/api/auth/register";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processAuth_Register(_response);
+        });
     }
-    return Promise.resolve<SwaggerResponse<AuthResponse>>(
-      new SwaggerResponse(status, _headers, null as any)
-    );
-  }
+
+    protected processAuth_Register(response: Response): Promise<SwaggerResponse<AuthResponse>> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AuthResponse.fromJS(resultData200);
+            return new SwaggerResponse(status, _headers, result200);
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = AuthResponse.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<SwaggerResponse<AuthResponse>>(new SwaggerResponse(status, _headers, null as any));
+    }
 }
 
 export class BoatClient extends BaseApiClient {
-  private http: {
-    fetch(url: RequestInfo, init?: RequestInit): Promise<Response>;
-  };
-  private baseUrl: string;
-  protected jsonParseReviver: ((key: string, value: any) => any) | undefined =
-    undefined;
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-  constructor(
-    baseUrl?: string,
-    http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }
-  ) {
-    super();
-    this.http = http ? http : (window as any);
-    this.baseUrl = baseUrl ?? "";
-  }
-
-  boat_Boats(
-    pageNumber: number | undefined,
-    pageSize: number | undefined
-  ): Promise<SwaggerResponse<GetBoatsResponse>> {
-    let url_ = this.baseUrl + "/api/auth/boats?";
-    if (pageNumber === null)
-      throw new Error("The parameter 'pageNumber' cannot be null.");
-    else if (pageNumber !== undefined)
-      url_ += "PageNumber=" + encodeURIComponent("" + pageNumber) + "&";
-    if (pageSize === null)
-      throw new Error("The parameter 'pageSize' cannot be null.");
-    else if (pageSize !== undefined)
-      url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
-    url_ = url_.replace(/[?&]$/, "");
-
-    let options_: RequestInit = {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-      },
-    };
-
-    return this.transformOptions(options_)
-      .then((transformedOptions_) => {
-        return this.http.fetch(url_, transformedOptions_);
-      })
-      .then((_response: Response) => {
-        return this.processBoat_Boats(_response);
-      });
-  }
-
-  protected processBoat_Boats(
-    response: Response
-  ): Promise<SwaggerResponse<GetBoatsResponse>> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl ?? "";
     }
-    if (status === 200) {
-      return response.text().then((_responseText) => {
-        let result200: any = null;
-        let resultData200 =
-          _responseText === ""
-            ? null
-            : JSON.parse(_responseText, this.jsonParseReviver);
-        result200 = GetBoatsResponse.fromJS(resultData200);
-        return new SwaggerResponse(status, _headers, result200);
-      });
-    } else if (status === 400) {
-      return response.text().then((_responseText) => {
-        let result400: any = null;
-        let resultData400 =
-          _responseText === ""
-            ? null
-            : JSON.parse(_responseText, this.jsonParseReviver);
-        result400 = GetBoatsResponse.fromJS(resultData400);
-        return throwException(
-          "A server side error occurred.",
-          status,
-          _responseText,
-          _headers,
-          result400
-        );
-      });
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then((_responseText) => {
-        return throwException(
-          "An unexpected server error occurred.",
-          status,
-          _responseText,
-          _headers
-        );
-      });
+
+    boat_Boats(pageNumber: number | undefined, pageSize: number | undefined): Promise<SwaggerResponse<GetBoatsResponse>> {
+        let url_ = this.baseUrl + "/api/auth/boats?";
+        if (pageNumber === null)
+            throw new Error("The parameter 'pageNumber' cannot be null.");
+        else if (pageNumber !== undefined)
+            url_ += "PageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "PageSize=" + encodeURIComponent("" + pageSize) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processBoat_Boats(_response);
+        });
     }
-    return Promise.resolve<SwaggerResponse<GetBoatsResponse>>(
-      new SwaggerResponse(status, _headers, null as any)
-    );
-  }
 
-  boat_Boat(id: number | undefined): Promise<SwaggerResponse<GetBoatResponse>> {
-    let url_ = this.baseUrl + "/api/auth/boat?";
-    if (id === null) throw new Error("The parameter 'id' cannot be null.");
-    else if (id !== undefined)
-      url_ += "Id=" + encodeURIComponent("" + id) + "&";
-    url_ = url_.replace(/[?&]$/, "");
-
-    let options_: RequestInit = {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-      },
-    };
-
-    return this.transformOptions(options_)
-      .then((transformedOptions_) => {
-        return this.http.fetch(url_, transformedOptions_);
-      })
-      .then((_response: Response) => {
-        return this.processBoat_Boat(_response);
-      });
-  }
-
-  protected processBoat_Boat(
-    response: Response
-  ): Promise<SwaggerResponse<GetBoatResponse>> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
+    protected processBoat_Boats(response: Response): Promise<SwaggerResponse<GetBoatsResponse>> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetBoatsResponse.fromJS(resultData200);
+            return new SwaggerResponse(status, _headers, result200);
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = GetBoatsResponse.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<SwaggerResponse<GetBoatsResponse>>(new SwaggerResponse(status, _headers, null as any));
     }
-    if (status === 200) {
-      return response.text().then((_responseText) => {
-        let result200: any = null;
-        let resultData200 =
-          _responseText === ""
-            ? null
-            : JSON.parse(_responseText, this.jsonParseReviver);
-        result200 = GetBoatResponse.fromJS(resultData200);
-        return new SwaggerResponse(status, _headers, result200);
-      });
-    } else if (status === 400) {
-      return response.text().then((_responseText) => {
-        let result400: any = null;
-        let resultData400 =
-          _responseText === ""
-            ? null
-            : JSON.parse(_responseText, this.jsonParseReviver);
-        result400 = GetBoatResponse.fromJS(resultData400);
-        return throwException(
-          "A server side error occurred.",
-          status,
-          _responseText,
-          _headers,
-          result400
-        );
-      });
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then((_responseText) => {
-        return throwException(
-          "An unexpected server error occurred.",
-          status,
-          _responseText,
-          _headers
-        );
-      });
+
+    boat_Boat(id: number | undefined): Promise<SwaggerResponse<GetBoatResponse>> {
+        let url_ = this.baseUrl + "/api/auth/boat?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processBoat_Boat(_response);
+        });
     }
-    return Promise.resolve<SwaggerResponse<GetBoatResponse>>(
-      new SwaggerResponse(status, _headers, null as any)
-    );
-  }
 
-  boat_Create(
-    command: CreateBoatCommand
-  ): Promise<SwaggerResponse<GetBoatResponse>> {
-    let url_ = this.baseUrl + "/api/auth/create";
-    url_ = url_.replace(/[?&]$/, "");
-
-    const content_ = JSON.stringify(command);
-
-    let options_: RequestInit = {
-      body: content_,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    };
-
-    return this.transformOptions(options_)
-      .then((transformedOptions_) => {
-        return this.http.fetch(url_, transformedOptions_);
-      })
-      .then((_response: Response) => {
-        return this.processBoat_Create(_response);
-      });
-  }
-
-  protected processBoat_Create(
-    response: Response
-  ): Promise<SwaggerResponse<GetBoatResponse>> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
+    protected processBoat_Boat(response: Response): Promise<SwaggerResponse<GetBoatResponse>> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetBoatResponse.fromJS(resultData200);
+            return new SwaggerResponse(status, _headers, result200);
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = GetBoatResponse.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<SwaggerResponse<GetBoatResponse>>(new SwaggerResponse(status, _headers, null as any));
     }
-    if (status === 200) {
-      return response.text().then((_responseText) => {
-        let result200: any = null;
-        let resultData200 =
-          _responseText === ""
-            ? null
-            : JSON.parse(_responseText, this.jsonParseReviver);
-        result200 = GetBoatResponse.fromJS(resultData200);
-        return new SwaggerResponse(status, _headers, result200);
-      });
-    } else if (status === 400) {
-      return response.text().then((_responseText) => {
-        let result400: any = null;
-        let resultData400 =
-          _responseText === ""
-            ? null
-            : JSON.parse(_responseText, this.jsonParseReviver);
-        result400 = GetBoatResponse.fromJS(resultData400);
-        return throwException(
-          "A server side error occurred.",
-          status,
-          _responseText,
-          _headers,
-          result400
-        );
-      });
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then((_responseText) => {
-        return throwException(
-          "An unexpected server error occurred.",
-          status,
-          _responseText,
-          _headers
-        );
-      });
+
+    boat_Create(command: CreateBoatCommand): Promise<SwaggerResponse<GetBoatResponse>> {
+        let url_ = this.baseUrl + "/api/auth/create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processBoat_Create(_response);
+        });
     }
-    return Promise.resolve<SwaggerResponse<GetBoatResponse>>(
-      new SwaggerResponse(status, _headers, null as any)
-    );
-  }
 
-  boat_Update(
-    command: UpdateBoatCommand
-  ): Promise<SwaggerResponse<BaseAPIResponse>> {
-    let url_ = this.baseUrl + "/api/auth/update";
-    url_ = url_.replace(/[?&]$/, "");
-
-    const content_ = JSON.stringify(command);
-
-    let options_: RequestInit = {
-      body: content_,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    };
-
-    return this.transformOptions(options_)
-      .then((transformedOptions_) => {
-        return this.http.fetch(url_, transformedOptions_);
-      })
-      .then((_response: Response) => {
-        return this.processBoat_Update(_response);
-      });
-  }
-
-  protected processBoat_Update(
-    response: Response
-  ): Promise<SwaggerResponse<BaseAPIResponse>> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
+    protected processBoat_Create(response: Response): Promise<SwaggerResponse<GetBoatResponse>> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GetBoatResponse.fromJS(resultData200);
+            return new SwaggerResponse(status, _headers, result200);
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = GetBoatResponse.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<SwaggerResponse<GetBoatResponse>>(new SwaggerResponse(status, _headers, null as any));
     }
-    if (status === 200) {
-      return response.text().then((_responseText) => {
-        let result200: any = null;
-        let resultData200 =
-          _responseText === ""
-            ? null
-            : JSON.parse(_responseText, this.jsonParseReviver);
-        result200 = BaseAPIResponse.fromJS(resultData200);
-        return new SwaggerResponse(status, _headers, result200);
-      });
-    } else if (status === 400) {
-      return response.text().then((_responseText) => {
-        let result400: any = null;
-        let resultData400 =
-          _responseText === ""
-            ? null
-            : JSON.parse(_responseText, this.jsonParseReviver);
-        result400 = BaseAPIResponse.fromJS(resultData400);
-        return throwException(
-          "A server side error occurred.",
-          status,
-          _responseText,
-          _headers,
-          result400
-        );
-      });
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then((_responseText) => {
-        return throwException(
-          "An unexpected server error occurred.",
-          status,
-          _responseText,
-          _headers
-        );
-      });
+
+    boat_Update(command: UpdateBoatCommand): Promise<SwaggerResponse<BaseAPIResponse>> {
+        let url_ = this.baseUrl + "/api/auth/update";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(command);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processBoat_Update(_response);
+        });
     }
-    return Promise.resolve<SwaggerResponse<BaseAPIResponse>>(
-      new SwaggerResponse(status, _headers, null as any)
-    );
-  }
 
-  boat_Delete(
-    id: number | undefined
-  ): Promise<SwaggerResponse<BaseAPIResponse>> {
-    let url_ = this.baseUrl + "/api/auth/delete?";
-    if (id === null) throw new Error("The parameter 'id' cannot be null.");
-    else if (id !== undefined)
-      url_ += "Id=" + encodeURIComponent("" + id) + "&";
-    url_ = url_.replace(/[?&]$/, "");
-
-    let options_: RequestInit = {
-      method: "DELETE",
-      headers: {
-        Accept: "application/json",
-      },
-    };
-
-    return this.transformOptions(options_)
-      .then((transformedOptions_) => {
-        return this.http.fetch(url_, transformedOptions_);
-      })
-      .then((_response: Response) => {
-        return this.processBoat_Delete(_response);
-      });
-  }
-
-  protected processBoat_Delete(
-    response: Response
-  ): Promise<SwaggerResponse<BaseAPIResponse>> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
+    protected processBoat_Update(response: Response): Promise<SwaggerResponse<BaseAPIResponse>> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BaseAPIResponse.fromJS(resultData200);
+            return new SwaggerResponse(status, _headers, result200);
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = BaseAPIResponse.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<SwaggerResponse<BaseAPIResponse>>(new SwaggerResponse(status, _headers, null as any));
     }
-    if (status === 200) {
-      return response.text().then((_responseText) => {
-        let result200: any = null;
-        let resultData200 =
-          _responseText === ""
-            ? null
-            : JSON.parse(_responseText, this.jsonParseReviver);
-        result200 = BaseAPIResponse.fromJS(resultData200);
-        return new SwaggerResponse(status, _headers, result200);
-      });
-    } else if (status === 400) {
-      return response.text().then((_responseText) => {
-        let result400: any = null;
-        let resultData400 =
-          _responseText === ""
-            ? null
-            : JSON.parse(_responseText, this.jsonParseReviver);
-        result400 = BaseAPIResponse.fromJS(resultData400);
-        return throwException(
-          "A server side error occurred.",
-          status,
-          _responseText,
-          _headers,
-          result400
-        );
-      });
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then((_responseText) => {
-        return throwException(
-          "An unexpected server error occurred.",
-          status,
-          _responseText,
-          _headers
-        );
-      });
+
+    boat_Delete(id: number | undefined): Promise<SwaggerResponse<BaseAPIResponse>> {
+        let url_ = this.baseUrl + "/api/auth/delete?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "DELETE",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processBoat_Delete(_response);
+        });
     }
-    return Promise.resolve<SwaggerResponse<BaseAPIResponse>>(
-      new SwaggerResponse(status, _headers, null as any)
-    );
-  }
 
-  boat_Purge(): Promise<SwaggerResponse<PurgeBoatResponse>> {
-    let url_ = this.baseUrl + "/api/auth/purge";
-    url_ = url_.replace(/[?&]$/, "");
-
-    let options_: RequestInit = {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-      },
-    };
-
-    return this.transformOptions(options_)
-      .then((transformedOptions_) => {
-        return this.http.fetch(url_, transformedOptions_);
-      })
-      .then((_response: Response) => {
-        return this.processBoat_Purge(_response);
-      });
-  }
-
-  protected processBoat_Purge(
-    response: Response
-  ): Promise<SwaggerResponse<PurgeBoatResponse>> {
-    const status = response.status;
-    let _headers: any = {};
-    if (response.headers && response.headers.forEach) {
-      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
+    protected processBoat_Delete(response: Response): Promise<SwaggerResponse<BaseAPIResponse>> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BaseAPIResponse.fromJS(resultData200);
+            return new SwaggerResponse(status, _headers, result200);
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = BaseAPIResponse.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<SwaggerResponse<BaseAPIResponse>>(new SwaggerResponse(status, _headers, null as any));
     }
-    if (status === 200) {
-      return response.text().then((_responseText) => {
-        let result200: any = null;
-        let resultData200 =
-          _responseText === ""
-            ? null
-            : JSON.parse(_responseText, this.jsonParseReviver);
-        result200 = PurgeBoatResponse.fromJS(resultData200);
-        return new SwaggerResponse(status, _headers, result200);
-      });
-    } else if (status === 400) {
-      return response.text().then((_responseText) => {
-        let result400: any = null;
-        let resultData400 =
-          _responseText === ""
-            ? null
-            : JSON.parse(_responseText, this.jsonParseReviver);
-        result400 = PurgeBoatResponse.fromJS(resultData400);
-        return throwException(
-          "A server side error occurred.",
-          status,
-          _responseText,
-          _headers,
-          result400
-        );
-      });
-    } else if (status !== 200 && status !== 204) {
-      return response.text().then((_responseText) => {
-        return throwException(
-          "An unexpected server error occurred.",
-          status,
-          _responseText,
-          _headers
-        );
-      });
+
+    boat_Purge(): Promise<SwaggerResponse<PurgeBoatResponse>> {
+        let url_ = this.baseUrl + "/api/auth/purge";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processBoat_Purge(_response);
+        });
     }
-    return Promise.resolve<SwaggerResponse<PurgeBoatResponse>>(
-      new SwaggerResponse(status, _headers, null as any)
-    );
-  }
+
+    protected processBoat_Purge(response: Response): Promise<SwaggerResponse<PurgeBoatResponse>> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = PurgeBoatResponse.fromJS(resultData200);
+            return new SwaggerResponse(status, _headers, result200);
+            });
+        } else if (status === 400) {
+            return response.text().then((_responseText) => {
+            let result400: any = null;
+            let resultData400 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result400 = PurgeBoatResponse.fromJS(resultData400);
+            return throwException("A server side error occurred.", status, _responseText, _headers, result400);
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<SwaggerResponse<PurgeBoatResponse>>(new SwaggerResponse(status, _headers, null as any));
+    }
 }
 
 export class BaseAPIResponse implements IBaseAPIResponse {
-  status?: EStatus;
-  errors?: ErrorDto[];
+    status?: EStatus;
+    errors?: ErrorDto[];
 
-  constructor(data?: IBaseAPIResponse) {
-    if (data) {
-      for (var property in data) {
-        if (data.hasOwnProperty(property))
-          (<any>this)[property] = (<any>data)[property];
-      }
+    constructor(data?: IBaseAPIResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
     }
-  }
 
-  init(_data?: any) {
-    if (_data) {
-      this.status = _data["status"];
-      if (Array.isArray(_data["errors"])) {
-        this.errors = [] as any;
-        for (let item of _data["errors"])
-          this.errors!.push(ErrorDto.fromJS(item));
-      }
+    init(_data?: any) {
+        if (_data) {
+            this.status = _data["status"];
+            if (Array.isArray(_data["errors"])) {
+                this.errors = [] as any;
+                for (let item of _data["errors"])
+                    this.errors!.push(ErrorDto.fromJS(item));
+            }
+        }
     }
-  }
 
-  static fromJS(data: any): BaseAPIResponse {
-    data = typeof data === "object" ? data : {};
-    let result = new BaseAPIResponse();
-    result.init(data);
-    return result;
-  }
-
-  toJSON(data?: any) {
-    data = typeof data === "object" ? data : {};
-    data["status"] = this.status;
-    if (Array.isArray(this.errors)) {
-      data["errors"] = [];
-      for (let item of this.errors) data["errors"].push(item.toJSON());
+    static fromJS(data: any): BaseAPIResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new BaseAPIResponse();
+        result.init(data);
+        return result;
     }
-    return data;
-  }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["status"] = this.status;
+        if (Array.isArray(this.errors)) {
+            data["errors"] = [];
+            for (let item of this.errors)
+                data["errors"].push(item.toJSON());
+        }
+        return data;
+    }
 }
 
 export interface IBaseAPIResponse {
-  status?: EStatus;
-  errors?: ErrorDto[];
+    status?: EStatus;
+    errors?: ErrorDto[];
 }
 
 export class AuthResponse extends BaseAPIResponse implements IAuthResponse {
-  token?: string;
-  refreshToken?: string;
+    token?: string;
+    refreshToken?: string;
 
-  constructor(data?: IAuthResponse) {
-    super(data);
-  }
-
-  override init(_data?: any) {
-    super.init(_data);
-    if (_data) {
-      this.token = _data["token"];
-      this.refreshToken = _data["refreshToken"];
+    constructor(data?: IAuthResponse) {
+        super(data);
     }
-  }
 
-  static override fromJS(data: any): AuthResponse {
-    data = typeof data === "object" ? data : {};
-    let result = new AuthResponse();
-    result.init(data);
-    return result;
-  }
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.token = _data["token"];
+            this.refreshToken = _data["refreshToken"];
+        }
+    }
 
-  override toJSON(data?: any) {
-    data = typeof data === "object" ? data : {};
-    data["token"] = this.token;
-    data["refreshToken"] = this.refreshToken;
-    super.toJSON(data);
-    return data;
-  }
+    static override fromJS(data: any): AuthResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new AuthResponse();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["token"] = this.token;
+        data["refreshToken"] = this.refreshToken;
+        super.toJSON(data);
+        return data;
+    }
 }
 
 export interface IAuthResponse extends IBaseAPIResponse {
-  token?: string;
-  refreshToken?: string;
+    token?: string;
+    refreshToken?: string;
 }
 
 export enum EStatus {
-  Success = 0,
-  Error = 1,
+    Success = 0,
+    Error = 1,
 }
 
 export class ErrorDto implements IErrorDto {
-  code?: string;
-  description?: string;
+    code?: string;
+    description?: string;
 
-  constructor(data?: IErrorDto) {
-    if (data) {
-      for (var property in data) {
-        if (data.hasOwnProperty(property))
-          (<any>this)[property] = (<any>data)[property];
-      }
+    constructor(data?: IErrorDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
     }
-  }
 
-  init(_data?: any) {
-    if (_data) {
-      this.code = _data["code"];
-      this.description = _data["description"];
+    init(_data?: any) {
+        if (_data) {
+            this.code = _data["code"];
+            this.description = _data["description"];
+        }
     }
-  }
 
-  static fromJS(data: any): ErrorDto {
-    data = typeof data === "object" ? data : {};
-    let result = new ErrorDto();
-    result.init(data);
-    return result;
-  }
+    static fromJS(data: any): ErrorDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ErrorDto();
+        result.init(data);
+        return result;
+    }
 
-  toJSON(data?: any) {
-    data = typeof data === "object" ? data : {};
-    data["code"] = this.code;
-    data["description"] = this.description;
-    return data;
-  }
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["description"] = this.description;
+        return data;
+    }
 }
 
 export interface IErrorDto {
-  code?: string;
-  description?: string;
+    code?: string;
+    description?: string;
 }
 
 export class LoginCommand implements ILoginCommand {
-  name?: string;
-  password?: string;
+    name?: string;
+    password?: string;
 
-  constructor(data?: ILoginCommand) {
-    if (data) {
-      for (var property in data) {
-        if (data.hasOwnProperty(property))
-          (<any>this)[property] = (<any>data)[property];
-      }
+    constructor(data?: ILoginCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
     }
-  }
 
-  init(_data?: any) {
-    if (_data) {
-      this.name = _data["name"];
-      this.password = _data["password"];
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.password = _data["password"];
+        }
     }
-  }
 
-  static fromJS(data: any): LoginCommand {
-    data = typeof data === "object" ? data : {};
-    let result = new LoginCommand();
-    result.init(data);
-    return result;
-  }
+    static fromJS(data: any): LoginCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new LoginCommand();
+        result.init(data);
+        return result;
+    }
 
-  toJSON(data?: any) {
-    data = typeof data === "object" ? data : {};
-    data["name"] = this.name;
-    data["password"] = this.password;
-    return data;
-  }
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["password"] = this.password;
+        return data;
+    }
 }
 
 export interface ILoginCommand {
-  name?: string;
-  password?: string;
+    name?: string;
+    password?: string;
 }
 
 export class RefreshTokenCommand implements IRefreshTokenCommand {
-  token?: string;
-  refreshToken?: string;
+    token?: string;
+    refreshToken?: string;
 
-  constructor(data?: IRefreshTokenCommand) {
-    if (data) {
-      for (var property in data) {
-        if (data.hasOwnProperty(property))
-          (<any>this)[property] = (<any>data)[property];
-      }
+    constructor(data?: IRefreshTokenCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
     }
-  }
 
-  init(_data?: any) {
-    if (_data) {
-      this.token = _data["token"];
-      this.refreshToken = _data["refreshToken"];
+    init(_data?: any) {
+        if (_data) {
+            this.token = _data["token"];
+            this.refreshToken = _data["refreshToken"];
+        }
     }
-  }
 
-  static fromJS(data: any): RefreshTokenCommand {
-    data = typeof data === "object" ? data : {};
-    let result = new RefreshTokenCommand();
-    result.init(data);
-    return result;
-  }
+    static fromJS(data: any): RefreshTokenCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new RefreshTokenCommand();
+        result.init(data);
+        return result;
+    }
 
-  toJSON(data?: any) {
-    data = typeof data === "object" ? data : {};
-    data["token"] = this.token;
-    data["refreshToken"] = this.refreshToken;
-    return data;
-  }
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["token"] = this.token;
+        data["refreshToken"] = this.refreshToken;
+        return data;
+    }
 }
 
 export interface IRefreshTokenCommand {
-  token?: string;
-  refreshToken?: string;
+    token?: string;
+    refreshToken?: string;
 }
 
 export class RegisterUserCommand implements IRegisterUserCommand {
-  name?: string;
-  password?: string;
+    name?: string;
+    password?: string;
 
-  constructor(data?: IRegisterUserCommand) {
-    if (data) {
-      for (var property in data) {
-        if (data.hasOwnProperty(property))
-          (<any>this)[property] = (<any>data)[property];
-      }
+    constructor(data?: IRegisterUserCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
     }
-  }
 
-  init(_data?: any) {
-    if (_data) {
-      this.name = _data["name"];
-      this.password = _data["password"];
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.password = _data["password"];
+        }
     }
-  }
 
-  static fromJS(data: any): RegisterUserCommand {
-    data = typeof data === "object" ? data : {};
-    let result = new RegisterUserCommand();
-    result.init(data);
-    return result;
-  }
+    static fromJS(data: any): RegisterUserCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new RegisterUserCommand();
+        result.init(data);
+        return result;
+    }
 
-  toJSON(data?: any) {
-    data = typeof data === "object" ? data : {};
-    data["name"] = this.name;
-    data["password"] = this.password;
-    return data;
-  }
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["password"] = this.password;
+        return data;
+    }
 }
 
 export interface IRegisterUserCommand {
-  name?: string;
-  password?: string;
+    name?: string;
+    password?: string;
 }
 
-export class GetBoatsResponse
-  extends BaseAPIResponse
-  implements IGetBoatsResponse
-{
-  boats?: PaginatedListOfBoatDto | undefined;
+export class GetBoatsResponse extends BaseAPIResponse implements IGetBoatsResponse {
+    boats?: PaginatedListOfBoatDto | undefined;
 
-  constructor(data?: IGetBoatsResponse) {
-    super(data);
-  }
-
-  override init(_data?: any) {
-    super.init(_data);
-    if (_data) {
-      this.boats = _data["boats"]
-        ? PaginatedListOfBoatDto.fromJS(_data["boats"])
-        : <any>undefined;
+    constructor(data?: IGetBoatsResponse) {
+        super(data);
     }
-  }
 
-  static override fromJS(data: any): GetBoatsResponse {
-    data = typeof data === "object" ? data : {};
-    let result = new GetBoatsResponse();
-    result.init(data);
-    return result;
-  }
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.boats = _data["boats"] ? PaginatedListOfBoatDto.fromJS(_data["boats"]) : <any>undefined;
+        }
+    }
 
-  override toJSON(data?: any) {
-    data = typeof data === "object" ? data : {};
-    data["boats"] = this.boats ? this.boats.toJSON() : <any>undefined;
-    super.toJSON(data);
-    return data;
-  }
+    static override fromJS(data: any): GetBoatsResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetBoatsResponse();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["boats"] = this.boats ? this.boats.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data;
+    }
 }
 
 export interface IGetBoatsResponse extends IBaseAPIResponse {
-  boats?: PaginatedListOfBoatDto | undefined;
+    boats?: PaginatedListOfBoatDto | undefined;
 }
 
 export class PaginatedListOfBoatDto implements IPaginatedListOfBoatDto {
-  items?: BoatDto[];
-  pageNumber?: number;
-  pageSize?: number;
-  totalPages?: number;
-  totalCount?: number;
-  hasPreviousPage?: boolean;
-  hasNextPage?: boolean;
+    items?: BoatDto[];
+    pageNumber?: number;
+    pageSize?: number;
+    totalPages?: number;
+    totalCount?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 
-  constructor(data?: IPaginatedListOfBoatDto) {
-    if (data) {
-      for (var property in data) {
-        if (data.hasOwnProperty(property))
-          (<any>this)[property] = (<any>data)[property];
-      }
+    constructor(data?: IPaginatedListOfBoatDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
     }
-  }
 
-  init(_data?: any) {
-    if (_data) {
-      if (Array.isArray(_data["items"])) {
-        this.items = [] as any;
-        for (let item of _data["items"]) this.items!.push(BoatDto.fromJS(item));
-      }
-      this.pageNumber = _data["pageNumber"];
-      this.pageSize = _data["pageSize"];
-      this.totalPages = _data["totalPages"];
-      this.totalCount = _data["totalCount"];
-      this.hasPreviousPage = _data["hasPreviousPage"];
-      this.hasNextPage = _data["hasNextPage"];
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(BoatDto.fromJS(item));
+            }
+            this.pageNumber = _data["pageNumber"];
+            this.pageSize = _data["pageSize"];
+            this.totalPages = _data["totalPages"];
+            this.totalCount = _data["totalCount"];
+            this.hasPreviousPage = _data["hasPreviousPage"];
+            this.hasNextPage = _data["hasNextPage"];
+        }
     }
-  }
 
-  static fromJS(data: any): PaginatedListOfBoatDto {
-    data = typeof data === "object" ? data : {};
-    let result = new PaginatedListOfBoatDto();
-    result.init(data);
-    return result;
-  }
-
-  toJSON(data?: any) {
-    data = typeof data === "object" ? data : {};
-    if (Array.isArray(this.items)) {
-      data["items"] = [];
-      for (let item of this.items) data["items"].push(item.toJSON());
+    static fromJS(data: any): PaginatedListOfBoatDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaginatedListOfBoatDto();
+        result.init(data);
+        return result;
     }
-    data["pageNumber"] = this.pageNumber;
-    data["pageSize"] = this.pageSize;
-    data["totalPages"] = this.totalPages;
-    data["totalCount"] = this.totalCount;
-    data["hasPreviousPage"] = this.hasPreviousPage;
-    data["hasNextPage"] = this.hasNextPage;
-    return data;
-  }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["pageNumber"] = this.pageNumber;
+        data["pageSize"] = this.pageSize;
+        data["totalPages"] = this.totalPages;
+        data["totalCount"] = this.totalCount;
+        data["hasPreviousPage"] = this.hasPreviousPage;
+        data["hasNextPage"] = this.hasNextPage;
+        return data;
+    }
 }
 
 export interface IPaginatedListOfBoatDto {
-  items?: BoatDto[];
-  pageNumber?: number;
-  pageSize?: number;
-  totalPages?: number;
-  totalCount?: number;
-  hasPreviousPage?: boolean;
-  hasNextPage?: boolean;
+    items?: BoatDto[];
+    pageNumber?: number;
+    pageSize?: number;
+    totalPages?: number;
+    totalCount?: number;
+    hasPreviousPage?: boolean;
+    hasNextPage?: boolean;
 }
 
 export class BoatDto implements IBoatDto {
-  id?: number;
-  name?: string | undefined;
-  description?: string | undefined;
+    id?: number;
+    name?: string | undefined;
+    description?: string | undefined;
 
-  constructor(data?: IBoatDto) {
-    if (data) {
-      for (var property in data) {
-        if (data.hasOwnProperty(property))
-          (<any>this)[property] = (<any>data)[property];
-      }
+    constructor(data?: IBoatDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
     }
-  }
 
-  init(_data?: any) {
-    if (_data) {
-      this.id = _data["id"];
-      this.name = _data["name"];
-      this.description = _data["description"];
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.description = _data["description"];
+        }
     }
-  }
 
-  static fromJS(data: any): BoatDto {
-    data = typeof data === "object" ? data : {};
-    let result = new BoatDto();
-    result.init(data);
-    return result;
-  }
+    static fromJS(data: any): BoatDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new BoatDto();
+        result.init(data);
+        return result;
+    }
 
-  toJSON(data?: any) {
-    data = typeof data === "object" ? data : {};
-    data["id"] = this.id;
-    data["name"] = this.name;
-    data["description"] = this.description;
-    return data;
-  }
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["description"] = this.description;
+        return data;
+    }
 }
 
 export interface IBoatDto {
-  id?: number;
-  name?: string | undefined;
-  description?: string | undefined;
+    id?: number;
+    name?: string | undefined;
+    description?: string | undefined;
 }
 
-export class GetBoatResponse
-  extends BaseAPIResponse
-  implements IGetBoatResponse
-{
-  boat?: BoatDto | undefined;
+export class GetBoatResponse extends BaseAPIResponse implements IGetBoatResponse {
+    boat?: BoatDto | undefined;
 
-  constructor(data?: IGetBoatResponse) {
-    super(data);
-  }
-
-  override init(_data?: any) {
-    super.init(_data);
-    if (_data) {
-      this.boat = _data["boat"]
-        ? BoatDto.fromJS(_data["boat"])
-        : <any>undefined;
+    constructor(data?: IGetBoatResponse) {
+        super(data);
     }
-  }
 
-  static override fromJS(data: any): GetBoatResponse {
-    data = typeof data === "object" ? data : {};
-    let result = new GetBoatResponse();
-    result.init(data);
-    return result;
-  }
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.boat = _data["boat"] ? BoatDto.fromJS(_data["boat"]) : <any>undefined;
+        }
+    }
 
-  override toJSON(data?: any) {
-    data = typeof data === "object" ? data : {};
-    data["boat"] = this.boat ? this.boat.toJSON() : <any>undefined;
-    super.toJSON(data);
-    return data;
-  }
+    static override fromJS(data: any): GetBoatResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetBoatResponse();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["boat"] = this.boat ? this.boat.toJSON() : <any>undefined;
+        super.toJSON(data);
+        return data;
+    }
 }
 
 export interface IGetBoatResponse extends IBaseAPIResponse {
-  boat?: BoatDto | undefined;
+    boat?: BoatDto | undefined;
 }
 
 export class CreateBoatCommand implements ICreateBoatCommand {
-  boat?: BoatDto | undefined;
+    boat?: BoatDto | undefined;
 
-  constructor(data?: ICreateBoatCommand) {
-    if (data) {
-      for (var property in data) {
-        if (data.hasOwnProperty(property))
-          (<any>this)[property] = (<any>data)[property];
-      }
+    constructor(data?: ICreateBoatCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
     }
-  }
 
-  init(_data?: any) {
-    if (_data) {
-      this.boat = _data["boat"]
-        ? BoatDto.fromJS(_data["boat"])
-        : <any>undefined;
+    init(_data?: any) {
+        if (_data) {
+            this.boat = _data["boat"] ? BoatDto.fromJS(_data["boat"]) : <any>undefined;
+        }
     }
-  }
 
-  static fromJS(data: any): CreateBoatCommand {
-    data = typeof data === "object" ? data : {};
-    let result = new CreateBoatCommand();
-    result.init(data);
-    return result;
-  }
+    static fromJS(data: any): CreateBoatCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateBoatCommand();
+        result.init(data);
+        return result;
+    }
 
-  toJSON(data?: any) {
-    data = typeof data === "object" ? data : {};
-    data["boat"] = this.boat ? this.boat.toJSON() : <any>undefined;
-    return data;
-  }
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["boat"] = this.boat ? this.boat.toJSON() : <any>undefined;
+        return data;
+    }
 }
 
 export interface ICreateBoatCommand {
-  boat?: BoatDto | undefined;
+    boat?: BoatDto | undefined;
 }
 
 export class UpdateBoatCommand implements IUpdateBoatCommand {
-  id?: number;
-  boat?: BoatDto | undefined;
+    id?: number;
+    boat?: BoatDto | undefined;
 
-  constructor(data?: IUpdateBoatCommand) {
-    if (data) {
-      for (var property in data) {
-        if (data.hasOwnProperty(property))
-          (<any>this)[property] = (<any>data)[property];
-      }
+    constructor(data?: IUpdateBoatCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
     }
-  }
 
-  init(_data?: any) {
-    if (_data) {
-      this.id = _data["id"];
-      this.boat = _data["boat"]
-        ? BoatDto.fromJS(_data["boat"])
-        : <any>undefined;
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.boat = _data["boat"] ? BoatDto.fromJS(_data["boat"]) : <any>undefined;
+        }
     }
-  }
 
-  static fromJS(data: any): UpdateBoatCommand {
-    data = typeof data === "object" ? data : {};
-    let result = new UpdateBoatCommand();
-    result.init(data);
-    return result;
-  }
+    static fromJS(data: any): UpdateBoatCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateBoatCommand();
+        result.init(data);
+        return result;
+    }
 
-  toJSON(data?: any) {
-    data = typeof data === "object" ? data : {};
-    data["id"] = this.id;
-    data["boat"] = this.boat ? this.boat.toJSON() : <any>undefined;
-    return data;
-  }
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["boat"] = this.boat ? this.boat.toJSON() : <any>undefined;
+        return data;
+    }
 }
 
 export interface IUpdateBoatCommand {
-  id?: number;
-  boat?: BoatDto | undefined;
+    id?: number;
+    boat?: BoatDto | undefined;
 }
 
-export class PurgeBoatResponse
-  extends BaseAPIResponse
-  implements IPurgeBoatResponse
-{
-  purgedBoats?: number;
+export class PurgeBoatResponse extends BaseAPIResponse implements IPurgeBoatResponse {
+    purgedBoats?: number;
 
-  constructor(data?: IPurgeBoatResponse) {
-    super(data);
-  }
-
-  override init(_data?: any) {
-    super.init(_data);
-    if (_data) {
-      this.purgedBoats = _data["purgedBoats"];
+    constructor(data?: IPurgeBoatResponse) {
+        super(data);
     }
-  }
 
-  static override fromJS(data: any): PurgeBoatResponse {
-    data = typeof data === "object" ? data : {};
-    let result = new PurgeBoatResponse();
-    result.init(data);
-    return result;
-  }
+    override init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.purgedBoats = _data["purgedBoats"];
+        }
+    }
 
-  override toJSON(data?: any) {
-    data = typeof data === "object" ? data : {};
-    data["purgedBoats"] = this.purgedBoats;
-    super.toJSON(data);
-    return data;
-  }
+    static override fromJS(data: any): PurgeBoatResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new PurgeBoatResponse();
+        result.init(data);
+        return result;
+    }
+
+    override toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["purgedBoats"] = this.purgedBoats;
+        super.toJSON(data);
+        return data;
+    }
 }
 
 export interface IPurgeBoatResponse extends IBaseAPIResponse {
-  purgedBoats?: number;
+    purgedBoats?: number;
 }
 
 export class SwaggerResponse<TResult> {
-  status: number;
-  headers: { [key: string]: any };
-  result: TResult;
+    status: number;
+    headers: { [key: string]: any; };
+    result: TResult;
 
-  constructor(
-    status: number,
-    headers: { [key: string]: any },
-    result: TResult
-  ) {
-    this.status = status;
-    this.headers = headers;
-    this.result = result;
-  }
+    constructor(status: number, headers: { [key: string]: any; }, result: TResult)
+    {
+        this.status = status;
+        this.headers = headers;
+        this.result = result;
+    }
 }
 
 export class SwaggerException extends Error {
-  override message: string;
-  status: number;
-  response: string;
-  headers: { [key: string]: any };
-  result: any;
+    override message: string;
+    status: number;
+    response: string;
+    headers: { [key: string]: any; };
+    result: any;
 
-  constructor(
-    message: string,
-    status: number,
-    response: string,
-    headers: { [key: string]: any },
-    result: any
-  ) {
-    super();
+    constructor(message: string, status: number, response: string, headers: { [key: string]: any; }, result: any) {
+        super();
 
-    this.message = message;
-    this.status = status;
-    this.response = response;
-    this.headers = headers;
-    this.result = result;
-  }
+        this.message = message;
+        this.status = status;
+        this.response = response;
+        this.headers = headers;
+        this.result = result;
+    }
 
-  protected isSwaggerException = true;
+    protected isSwaggerException = true;
 
-  static isSwaggerException(obj: any): obj is SwaggerException {
-    return obj.isSwaggerException === true;
-  }
+    static isSwaggerException(obj: any): obj is SwaggerException {
+        return obj.isSwaggerException === true;
+    }
 }
 
-function throwException(
-  message: string,
-  status: number,
-  response: string,
-  headers: { [key: string]: any },
-  result?: any
-): any {
-  if (result !== null && result !== undefined) throw result;
-  else throw new SwaggerException(message, status, response, headers, null);
+function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): any {
+    if (result !== null && result !== undefined)
+        throw result;
+    else
+        throw new SwaggerException(message, status, response, headers, null);
 }

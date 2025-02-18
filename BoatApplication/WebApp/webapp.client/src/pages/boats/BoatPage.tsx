@@ -14,12 +14,14 @@ const Boat = () => {
   }, [id]);
 
   return (
-    <BoatDetails
-      boat={currentBoat}
-      updateBoat={updateBoat}
-      deleteBoat={deleteBoat}
-      isLoading={isLoading}
-    />
+    <div className="container mx-auto px-6 pt-20  w-screen">
+      <BoatDetails
+        boat={currentBoat}
+        updateBoat={updateBoat}
+        deleteBoat={deleteBoat}
+        isLoading={isLoading}
+      />
+    </div>
   );
 };
 

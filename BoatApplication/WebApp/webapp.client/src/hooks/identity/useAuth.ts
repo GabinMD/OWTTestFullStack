@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { AuthResponse } from "../../api-client/web-api-client";
 import {
   fetchLogin,
   fetchRefreshToken,
@@ -7,34 +6,11 @@ import {
 } from "../../api-client/auth/auth-client.ts";
 import { parseJwt } from "../../utils/auth-utils.ts";
 import { setBoatClientToken } from "../../api-client/boats/boats-client.ts";
-import { User } from "../../interfaces/user.ts";
-
-interface AuthState {
-  token: string | null;
-  user: User | null;
-  errors: string[];
-  isLoading: boolean;
-  initialized: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
-  register: (email: string, password: string) => Promise<void>;
-  refreshToken: () => Promise<void>;
-  initAuth: () => Promise<void>;
-}
-
-const handleAuthResponse = (response: AuthResponse | undefined) => {
-  if (!response) return { errors: ["Erreur lors de la connexion"] };
-
-  localStorage.setItem("token", response.token ?? "");
-  localStorage.setItem("refreshToken", response.refreshToken ?? "");
-  return {
-    token: response.token,
-    user: parseJwt(response.token ?? ""),
-    errors: response.errors
-      ? response.errors.map((e) => e.description ?? "").filter((e) => e)
-      : [],
-  };
-};
+import {
+  handleAuthResponse,
+  scheduleTokenRefresh,
+} from "./helpers/use-auth-helpers.ts";
+import { AuthState } from "./interfaces/auth-state.ts";
 
 export const useAuth = create<AuthState>((set, get) => ({
   token: null,
@@ -42,13 +18,21 @@ export const useAuth = create<AuthState>((set, get) => ({
   errors: [],
   isLoading: true,
   initialized: false,
+  refreshTokenTimeout: null,
 
   login: async (email, password) => {
     set({ isLoading: true });
     const response = await fetchLogin(email, password);
     set(handleAuthResponse(response));
     setBoatClientToken(get().token);
-    set({ isLoading: false });
+    set({
+      isLoading: false,
+      refreshTokenTimeout: scheduleTokenRefresh(
+        get().refreshTokenTimeout,
+        get().user?.exp ?? 0,
+        get().refreshToken
+      ),
+    });
   },
 
   logout: () => {
@@ -73,7 +57,14 @@ export const useAuth = create<AuthState>((set, get) => ({
     const response = await fetchRefreshToken(refreshToken);
     set(handleAuthResponse(response));
     setBoatClientToken(get().token);
-    set({ isLoading: false });
+    set({
+      isLoading: false,
+      refreshTokenTimeout: scheduleTokenRefresh(
+        get().refreshTokenTimeout,
+        get().user?.exp ?? 0,
+        get().refreshToken
+      ),
+    });
   },
 
   initAuth: async () => {
@@ -83,7 +74,6 @@ export const useAuth = create<AuthState>((set, get) => ({
     const user = parseJwt(token);
 
     if (token && !user) {
-      console.log("Token expiré, tentative de refresh...");
       await useAuth.getState().refreshToken();
     } else {
       set({ token, user });

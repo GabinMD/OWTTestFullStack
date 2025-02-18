@@ -5,6 +5,7 @@ using BoatApplication.Domain.Identity.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
+using static BoatApplication.Domain.Common.Models.BaseAPIResponse;
 
 namespace WebApp.Server.Controllers
 {
@@ -25,7 +26,7 @@ namespace WebApp.Server.Controllers
         public async Task<IActionResult> Login([FromBody] LoginCommand command)
         {
             var response = await _mediator.Send(command);
-            if (response.Errors != null)
+            if (response.Status == EStatus.Error)
                 return BadRequest(response);
             return Ok(response);
         }

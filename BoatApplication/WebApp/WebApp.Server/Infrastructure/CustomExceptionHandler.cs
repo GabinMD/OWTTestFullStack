@@ -1,6 +1,8 @@
 ﻿using BoatApplication.Domain.Common.Exceptions;
+using BoatApplication.Domain.Common.Models;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace BoatApplication.Web.Infrastructure;
 
@@ -10,7 +12,6 @@ public class CustomExceptionHandler : IExceptionHandler
 
     public CustomExceptionHandler()
     {
-        // Register known exception types and handlers.
         _exceptionHandlers = new()
             {
                 { typeof(ValidationException), HandleValidationException },
@@ -39,10 +40,10 @@ public class CustomExceptionHandler : IExceptionHandler
 
         httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
 
-        await httpContext.Response.WriteAsJsonAsync(new ValidationProblemDetails(exception.Errors)
+        await httpContext.Response.WriteAsJsonAsync(new BaseAPIResponse()
         {
-            Status = StatusCodes.Status400BadRequest,
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+            Status = BaseAPIResponse.EStatus.Error,
+            Errors = exception.Errors
         });
     }
 
@@ -52,12 +53,10 @@ public class CustomExceptionHandler : IExceptionHandler
 
         httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
 
-        await httpContext.Response.WriteAsJsonAsync(new ProblemDetails()
+        await httpContext.Response.WriteAsJsonAsync(new BaseAPIResponse()
         {
-            Status = StatusCodes.Status404NotFound,
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-            Title = "The specified resource was not found.",
-            Detail = exception.Message
+            Status = BaseAPIResponse.EStatus.Error,
+            Errors = exception.Errors
         });
     }
 
@@ -75,13 +74,13 @@ public class CustomExceptionHandler : IExceptionHandler
 
     private async Task HandleForbiddenAccessException(HttpContext httpContext, Exception ex)
     {
+        var exception = (ForbiddenAccessException)ex;
         httpContext.Response.StatusCode = StatusCodes.Status403Forbidden;
 
-        await httpContext.Response.WriteAsJsonAsync(new ProblemDetails
+        await httpContext.Response.WriteAsJsonAsync(new BaseAPIResponse()
         {
-            Status = StatusCodes.Status403Forbidden,
-            Title = "Forbidden",
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3"
+            Status = BaseAPIResponse.EStatus.Error,
+            Errors = exception.Errors
         });
     }
 }

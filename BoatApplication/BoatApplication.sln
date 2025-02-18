@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35728.132 d17.12
+VisualStudioVersion = 17.12.35728.132
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp.Server", "WebApp\WebApp.Server\WebApp.Server.csproj", "{27F3CBB9-81C0-417B-B9F2-B1918D431984}"
 EndProject
@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "�
 	ProjectSection(SolutionItems) = preProject
 		..\.gitignore = ..\.gitignore
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A7A2FB63-8EC8-48F5-93E8-B8F731B37B76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Tests", "Tests\Application.Tests\Application.Tests.csproj", "{05D7DA91-3BF5-4FCA-8F78-59FCBC911718}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,8 +50,15 @@ Global
 		{B9A343E2-FCD3-458C-ACBB-6A70EC87FD72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9A343E2-FCD3-458C-ACBB-6A70EC87FD72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9A343E2-FCD3-458C-ACBB-6A70EC87FD72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05D7DA91-3BF5-4FCA-8F78-59FCBC911718}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05D7DA91-3BF5-4FCA-8F78-59FCBC911718}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05D7DA91-3BF5-4FCA-8F78-59FCBC911718}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05D7DA91-3BF5-4FCA-8F78-59FCBC911718}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{05D7DA91-3BF5-4FCA-8F78-59FCBC911718} = {A7A2FB63-8EC8-48F5-93E8-B8F731B37B76}
 	EndGlobalSection
 EndGlobal

@@ -35,7 +35,6 @@ builder.Services.AddOpenApi();
 var app = builder.Build();
 
 app.UseDefaultFiles();
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     await app.InitialiseDatabaseAsync();
@@ -49,6 +48,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseExceptionHandler(options => { });
 
 app.MapControllers();
 
