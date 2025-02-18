@@ -1,15 +1,18 @@
-import { useAuth } from "../../hooks/identity/useAuth.ts";
+import { useEffect } from "react";
+import BoatList from "../../components/boats/BoatList";
+import { useBoats } from "../../hooks/boats/useBoats.ts";
+import { DefaultPagination } from "../../interfaces/pagination.ts";
 
 const BoatListPage = () => {
-  const { user, token } = useAuth();
+  const { fetchAllBoats } = useBoats();
+
+  useEffect(() => {
+    fetchAllBoats(DefaultPagination, true);
+  }, []);
+
   return (
-    <div>
-      <h2>Liste des Bateaux</h2>
-      {token}
-      <ul>
-        <li>Id: {user?.id}</li>
-        <li>Name: {user?.name}</li>
-      </ul>
+    <div className="container mx-auto px-6 pt-20">
+      <BoatList />
     </div>
   );
 };

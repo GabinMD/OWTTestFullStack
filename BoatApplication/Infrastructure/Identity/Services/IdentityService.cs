@@ -1,4 +1,5 @@
-﻿using Azure.Core;
+﻿using AutoMapper;
+using Azure.Core;
 using BoatApplication.Domain.Common.Interfaces;
 using BoatApplication.Domain.Common.Interfaces.Services;
 using BoatApplication.Domain.Common.Models;
@@ -21,30 +22,33 @@ namespace BoatApplication.Infrastructure.Identity.Services
         private readonly SignInManager<User> _signInManager;
         private readonly IUserClaimsPrincipalFactory<User> _userClaimsPrincipalFactory;
         private readonly IAuthorizationService _authorizationService;
+        private readonly IMapper _mapper;
 
         public IdentityService(
-            UserManager<User> userManager, SignInManager<User> signInManager, IUserClaimsPrincipalFactory<User> userClaimsPrincipalFactory, IAuthorizationService authorizationService)
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+            IUserClaimsPrincipalFactory<User> userClaimsPrincipalFactory,
+            IAuthorizationService authorizationService,
+            IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _userClaimsPrincipalFactory = userClaimsPrincipalFactory;
             _authorizationService = authorizationService;
+            _mapper = mapper;
         }
 
         public async Task<(Result result, IUser? user)> CreateUserAsync(string userName, string password)
         {
             var user = new User
             {
+                Id = Guid.NewGuid().ToString(),
                 UserName = userName
             };
 
             var result = await _userManager.CreateAsync(user, password);
 
-            user = await _userManager.FindByNameAsync(userName);
-            if (user == null)
-                return (Result.Failure(Constants.IdentityErrors.CouldNotCreateUser), null);
-
-            return (result.ToApplicationResult(), user.ToDto());
+            return (result.ToApplicationResult(), _mapper.Map<UserDto>(user));
         }
 
         public async Task<string?> GetUserNameAsync(string userId)
@@ -79,8 +83,8 @@ namespace BoatApplication.Infrastructure.Identity.Services
             var user = await _userManager.FindByNameAsync(userName);
             if (user == null)
                 return (Result.Failure(Constants.IdentityErrors.UserNotFound), null);
-            var result = await _signInManager.PasswordSignInAsync(user, passwd, false, false);
-            return (result.ToApplicationResult(), user.ToDto());
+            var result = await _signInManager.CheckPasswordSignInAsync(user, passwd, false);
+            return (result.ToApplicationResult(), _mapper.Map<UserDto>(user));
         }
     }
 }

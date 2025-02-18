@@ -7,7 +7,6 @@ import {
 } from "../web-api-client.ts";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-console.log("BASE_URL:", BASE_URL);
 
 export const authClient = new AuthClient(BASE_URL);
 

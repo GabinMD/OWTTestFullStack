@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BoatApplication.Domain.Common.Attributes
+namespace BoatApplication.Application.Common.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
     public class AuthorizeAttribute : Attribute

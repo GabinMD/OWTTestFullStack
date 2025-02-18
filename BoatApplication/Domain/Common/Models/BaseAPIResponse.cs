@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BoatApplication.Domain.Common.Models
+﻿namespace BoatApplication.Domain.Common.Models
 {
 
     public class BaseAPIResponse
@@ -16,5 +10,15 @@ namespace BoatApplication.Domain.Common.Models
         }
         public EStatus Status { get; set; } = EStatus.Success;
         public List<Error> Errors { get; set; } = new List<Error>();
+
+        public static BaseAPIResponse Success()
+        {
+            return new BaseAPIResponse() { Status = EStatus.Success };
+        }
+
+        public static BaseAPIResponse Failure(List<Error> errors)
+        {
+            return new BaseAPIResponse() { Status = EStatus.Error, Errors = errors };
+        }
     }
 }

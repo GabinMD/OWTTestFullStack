@@ -1,4 +1,5 @@
 ﻿using BoatApplication.Domain.Identity.Interfaces;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace BoatApplication.WebApp.Server.Services.Identity
@@ -12,8 +13,8 @@ namespace BoatApplication.WebApp.Server.Services.Identity
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public string? Id => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+        public string? Id => _httpContextAccessor.HttpContext?.User?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+        public string? Name => _httpContextAccessor.HttpContext?.User?.FindFirst(JwtRegisteredClaimNames.Name)?.Value;
 
-        public string? Name => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Name);
     }
 }

@@ -1,11 +1,5 @@
 ﻿using BoatApplication.Domain.Common.Models;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace BoatApplication.Infrastructure.Identity.Extentions
 {
     public static class IdentityResultExtentions

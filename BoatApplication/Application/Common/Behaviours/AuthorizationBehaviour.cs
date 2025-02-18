@@ -1,11 +1,11 @@
-﻿using BoatApplication.Domain.Common.Attributes;
+﻿using BoatApplication.Application.Common.Attributes;
 using BoatApplication.Domain.Common.Exceptions;
 using BoatApplication.Domain.Common.Extentions;
 using BoatApplication.Domain.Common.Interfaces.Services;
 using BoatApplication.Domain.Identity.Interfaces;
 using System.Reflection;
 
-namespace BoatApplication.Domain.Common.Behaviours
+namespace BoatApplication.Application.Common.Behaviours
 {
     public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
     {

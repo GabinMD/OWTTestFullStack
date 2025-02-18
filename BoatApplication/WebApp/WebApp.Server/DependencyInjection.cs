@@ -1,6 +1,7 @@
 ﻿using BoatApplication.Infrastructure.DataBase;
 using BoatApplication.WebApp.Server.Services.Identity;
 using BoatApplication.Domain.Identity.Interfaces;
+using BoatApplication.Web.Infrastructure;
 
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -15,7 +16,7 @@ public static class DependencyInjection
         builder.Services.AddHealthChecks()
             .AddDbContextCheck<ApplicationDbContext>();
 
-       // builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+        builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
         builder.Services.AddEndpointsApiExplorer();
     }

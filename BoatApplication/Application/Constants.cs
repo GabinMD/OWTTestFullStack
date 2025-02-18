@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BoatApplication.Domain
+namespace BoatApplication.Application
 {
     internal static partial class Constants
     {

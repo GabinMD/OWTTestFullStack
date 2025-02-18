@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BoatApplication.Infrastructure.Identity
+namespace BoatApplication.Infrastructure.Identity.Extentions
 {
     public static class SignInResultExtentions
     {

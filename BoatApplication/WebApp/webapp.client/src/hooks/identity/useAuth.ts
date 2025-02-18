@@ -6,10 +6,12 @@ import {
   fetchRegister,
 } from "../../api-client/auth/auth-client.ts";
 import { parseJwt } from "../../utils/auth-utils.ts";
+import { setBoatClientToken } from "../../api-client/boats/boats-client.ts";
+import { User } from "../../interfaces/user.ts";
 
 interface AuthState {
   token: string | null;
-  user: { id: string; name: string } | null;
+  user: User | null;
   errors: string[];
   isLoading: boolean;
   initialized: boolean;
@@ -21,7 +23,6 @@ interface AuthState {
 }
 
 const handleAuthResponse = (response: AuthResponse | undefined) => {
-  console.log(response);
   if (!response) return { errors: ["Erreur lors de la connexion"] };
 
   localStorage.setItem("token", response.token ?? "");
@@ -35,7 +36,7 @@ const handleAuthResponse = (response: AuthResponse | undefined) => {
   };
 };
 
-export const useAuth = create<AuthState>((set) => ({
+export const useAuth = create<AuthState>((set, get) => ({
   token: null,
   user: null,
   errors: [],
@@ -46,6 +47,7 @@ export const useAuth = create<AuthState>((set) => ({
     set({ isLoading: true });
     const response = await fetchLogin(email, password);
     set(handleAuthResponse(response));
+    setBoatClientToken(get().token);
     set({ isLoading: false });
   },
 
@@ -59,6 +61,7 @@ export const useAuth = create<AuthState>((set) => ({
     set({ isLoading: true });
     const response = await fetchRegister(username, password);
     set(handleAuthResponse(response));
+    setBoatClientToken(get().token);
     set({ isLoading: false });
   },
 
@@ -69,6 +72,7 @@ export const useAuth = create<AuthState>((set) => ({
 
     const response = await fetchRefreshToken(refreshToken);
     set(handleAuthResponse(response));
+    setBoatClientToken(get().token);
     set({ isLoading: false });
   },
 
@@ -83,6 +87,7 @@ export const useAuth = create<AuthState>((set) => ({
       await useAuth.getState().refreshToken();
     } else {
       set({ token, user });
+      setBoatClientToken(get().token);
     }
 
     set({ isLoading: false, initialized: true });

@@ -17,7 +17,7 @@ namespace BoatApplication.Domain.Identity.Models
             return new AuthResponse() { Token = token, RefreshToken = refreshToken };
         }
 
-        public static AuthResponse Failure(List<Error> errors)
+        public static new AuthResponse Failure(List<Error> errors)
         {
             return new AuthResponse() {  Status = EStatus.Error, Errors = errors };
         }

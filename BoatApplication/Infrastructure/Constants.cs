@@ -33,5 +33,14 @@ namespace BoatApplication.Infrastructure
             public static (string code, string description) InvalidRefreshToken = ("InvalidRefreshToken", "Invalid refresh token.");
             public static (string code, string description) ExpiredRefreshToken = ("ExpiredRefreshToken", "Expired refresh token.");
         }
+
+        internal static class BoatRepositoryErrors
+        {
+            public static (string code, string description) BoatNotFound = ("BoatNotFound", "Boat not found.");
+            public static (string code, string description) BoatNotCreated = ("BoatNotCreated", "Boat not created.");
+            public static (string code, string description) BoatNotUpdated = ("BoatNotUpdated", "Boat not updated.");
+            public static (string code, string description) BoatNotDeleted = ("BoatNotDeleted", "Boat not deleted.");
+            public static (string code, string description) BoatsNotPurged = ("BoatsNotPurged", "Boats not purged.");
+        }
     }
 }

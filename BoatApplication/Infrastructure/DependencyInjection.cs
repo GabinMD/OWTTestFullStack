@@ -1,9 +1,10 @@
-﻿using BoatApplication.Domain;
-using BoatApplication.Domain.Common.Interfaces.DataBase;
+﻿using BoatApplication.Domain.Boats.Interfaces;
 using BoatApplication.Domain.Common.Interfaces.Services;
 using BoatApplication.Domain.Constants;
 using BoatApplication.Infrastructure;
 using BoatApplication.Infrastructure.DataBase;
+using BoatApplication.Infrastructure.DataBase.Interfaces;
+using BoatApplication.Infrastructure.DataBase.Repositories;
 using BoatApplication.Infrastructure.Identity;
 using BoatApplication.Infrastructure.Identity.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -39,6 +40,7 @@ public static class DependencyInjection
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
                 };
+                options.MapInboundClaims = false;
             });
 
         services.AddOptions().AddLogging();
@@ -85,9 +87,12 @@ public static class DependencyInjection
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
         builder.Services.AddTransient<IIdentityService, IdentityService>();
-        builder.Services.AddTransient<ITokenService, TokenService>();   
+        builder.Services.AddTransient<ITokenService, TokenService>();
+        builder.Services.AddTransient<IBoatRepository, BoatRepository>();
 
         builder.Services.AddAuthorization(options =>
             options.AddPolicy(Policies.CanPurge, policy => policy.RequireRole(Roles.Administrator)));
+
+        builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
     }
 }

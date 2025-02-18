@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BoatApplication.Domain.Common.Interfaces.DataBase
+namespace BoatApplication.Application.Boats.Interfaces
 {
-    public interface IApplicationDbContext
+    public interface IBoatRequest
     {
     }
 }
